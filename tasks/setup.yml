@@ -1,0 +1,9 @@
+---
+# tasks/setup.yml
+
+- name: ocStore | Sync | Set current environment
+  set_fact:
+    ocstore_environment: "{{ lookup('env','ANSIBLE_ENV') | default('development') }}"
+  run_once: true
+  when: ocstore_environment is not defined
+

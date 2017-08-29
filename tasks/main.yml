@@ -1,0 +1,6 @@
+---
+# tasks/main.yml
+
+- include: setup.yml
+- include: files.yml
+- include: cleanup.yml
