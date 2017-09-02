@@ -1,3 +1,6 @@
 ---
 # defaults/main.yml
 
+ocstore_sync_dir: "sync/{{ inventory_hostname }}"
+ocstore_sync_download: []
+ocstore_sync_upload: []
