@@ -46,6 +46,9 @@ ocstore_sync_tasks:
       - "--exclude=index.html"
   - path: "{{ ocstore_shared_dir }}/css"
     mode: "push"
+    options:
+      - "--delete-after"
+      - "--exclude=index.html"
 
 ## License
 
