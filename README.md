@@ -10,24 +10,8 @@ None.
 
 Available variables are listed below, along with default values:
 
-ocstore_sync_dir: "sync/{{ inventory_hostname }}"
-
-ocstore_sync_download:
-  - path: "{{ ocstore_shared_dir }}/image/data/avatars/300"
-    options:
-      - "--delete-before"
-
-ocstore_sync_upload:
-  - path: "{{ ocstore_shared_dir }}/download"
-    options:
-      - "--delete-after"
-      - "--exclude=index.html"
-  - path: "{{ ocstore_shared_dir }}/image"
-    options:
-      - "--delete-after"
-      - "--exclude=cache/"
-      - "--exclude=.htaccess"
-      - "--exclude=index.html"
+ocstore_sync_dir: "resources/{{ inventory_hostname }}/sync"
+ocstore_sync_tasks: []
 
 ## Dependencies
 
@@ -41,24 +25,27 @@ None.
 
 *Inside `vars/main.yml`*:
 
-ocstore_sync_dir: "sync/{{ inventory_hostname }}"
+ocstore_sync_dir: "resources/{{ inventory_hostname }}/sync"
 
-ocstore_sync_download:
+ocstore_sync_tasks:
   - path: "{{ ocstore_shared_dir }}/image/data/avatars/300"
+    mode: "pull"
     options:
       - "--delete-before"
-
-ocstore_sync_upload:
   - path: "{{ ocstore_shared_dir }}/download"
+    mode: "push"
     options:
       - "--delete-after"
       - "--exclude=index.html"
   - path: "{{ ocstore_shared_dir }}/image"
+    mode: "push"
     options:
       - "--delete-after"
-      - "--exclude=cache/"
-      - "--exclude=.htaccess"
+      - "--exclude=/cache/"
+      - "--exclude=/no_image.jpg"
       - "--exclude=index.html"
+  - path: "{{ ocstore_shared_dir }}/css"
+    mode: "push"
 
 ## License
 
