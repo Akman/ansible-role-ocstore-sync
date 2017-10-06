@@ -1,6 +1,12 @@
 ---
 # tasks/files.yml
 
+- name: ocStore | Sync | Ensure local sync folders are present
+  local_action:
+    file state="directory" path="{{ playbook_dir }}/{{ ocstore_sync_dir }}/{{ item.path }}"
+  with_items: "{{ ocstore_sync_tasks }}"
+  when: ocstore_sync_mode == "pull"
+
 - name: ocStore | Sync | Pull files
   synchronize:
     archive: "yes"
@@ -12,6 +18,13 @@
   with_items: "{{ ocstore_sync_tasks }}"
   when: ocstore_sync_mode == "pull"
   become: "yes"
+
+- name: ocStore | Sync | Ensure remote sync folders are present
+  file:
+    state="directory" path="{{ ocstore_www_root }}/{{ item.path }}"
+  with_items: "{{ ocstore_sync_tasks }}"
+  when: ocstore_sync_mode == "push"
+  become: yes
 
 - name: ocStore | Sync | Push files
   synchronize:

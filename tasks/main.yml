@@ -1,7 +1,9 @@
 ---
 # tasks/main.yml
 
+- import_tasks: setup.yml
+  when: ocstore_environment != 'development'
 - import_tasks: files.yml
   when: ocstore_environment != 'development'
 - import_tasks: permissions.yml
-  when: ocstore_environment != 'development'
+  when: ocstore_environment != 'development' and ocstore_sync_mode == 'push'

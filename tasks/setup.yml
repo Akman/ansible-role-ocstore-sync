@@ -1,0 +1,20 @@
+---
+# tasks/setup.yml
+
+- name: ocStore | Sync | Get web server owner group name
+  shell: "ps axo user,group,comm | egrep '(apache|httpd)' | grep -v ^root | uniq | cut -d ' ' -f 2"
+  register: ocstore_www_owner_group
+  changed_when: false
+  become: yes
+
+- name: ocStore | Sync | Check web server owner group name
+  fail: msg="Could not get web server owner group name!"
+  when: ocstore_www_owner_group.stdout == ''
+
+- name: ocStore | Sync | Set default web server owner group name
+  set_fact:
+    ocstore_www_owner_group: "{{ ocstore_www_owner_group.stdout }}"
+
+- name: ocStore | Sync | Set web server owner user name
+  set_fact:
+    ocstore_www_owner_user: "{{ ansible_env.USER }}"
