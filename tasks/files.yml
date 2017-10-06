@@ -1,0 +1,13 @@
+---
+# tasks/files.yml
+
+- name: ocStore | Sync | Synchronize files
+  synchronize:
+    archive: "yes"
+    compress: "yes"
+    mode: "{{ item.mode }}"
+    src: "{{ (item.mode == 'pull') | ternary(ocstore_www_root+'/'+item.path+'/', playbook_dir+'/'+ocstore_sync_dir+'/'+item.path+'/') }}"
+    dest: "{{ (item.mode == 'pull') | ternary(playbook_dir+'/'+ocstore_sync_dir+'/'+item.path, ocstore_www_root+'/'+item.path) }}"
+    rsync_opts: "{{ item.options | default([]) }}"
+  with_items: "{{ ocstore_sync_tasks }}"
+  become: yes

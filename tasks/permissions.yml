@@ -1,0 +1,21 @@
+---
+# tasks/permissions.yml
+
+- name: ocStore | Sync | Ensure shared folders and files have valid owner and group
+  shell: "chown -Rf {{ ocstore_www_owner_user }}:{{ ocstore_www_owner_group }} {{ ocstore_www_root }}/{{ ocstore_shared_dir }}"
+  become: yes
+  
+- name: ocStore | Sync | Build command list for setup shared folders and files permissions
+  set_fact:
+    ocstore_permissions_cmd: >
+      {% for item in ocstore_shared_permissions %}
+        {% if item.name is defined %}
+          find {{ ocstore_www_root }}/{{ ocstore_shared_dir }}/{{ item.path }} -type {{ (item.type == "file") | ternary('f','d') }} -name {{ item.name | quote }} -exec chmod {{ item.mode }} {} +;
+        {% else %}
+          find {{ ocstore_www_root }}/{{ ocstore_shared_dir }}/{{ item.path }} -type {{ (item.type == "file") | ternary('f','d') }} -exec chmod {{ item.mode }} {} +;
+        {% endif %}
+      {% endfor %}
+
+- name: ocStore | Sync | Ensure shared folders and files have valid permissions
+  shell: "{{ ocstore_permissions_cmd | regex_replace(';\\s+find ', ';find ') | trim }}"
+  become: yes
