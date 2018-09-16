@@ -4,6 +4,7 @@
 dependencies: []
 
 galaxy_info:
+  role_name: ocstore_sync
   author: Akman
   description: ocStore Sync for Linux
   license: "license (MIT)"
