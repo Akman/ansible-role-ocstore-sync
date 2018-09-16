@@ -1,4 +1,4 @@
-# Ansible Role: ocstore-sync
+# Ansible Role: ocstore_sync
 
 Sync ocStore on Linux.
 
@@ -21,7 +21,7 @@ None.
 
     - hosts: all
       roles:
-        - Akman.ocstore-sync
+        - Akman.ocstore_sync
 
 *Inside `vars/main.yml`*:
 
